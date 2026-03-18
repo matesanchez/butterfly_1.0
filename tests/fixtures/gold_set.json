@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Lipid nanoparticle mRNA delivery with SM-102",
+    "text": "Formulation: SM-102, DSPC, cholesterol, and PEG-lipid at molar ratio 50:10:38.5:1.5. siRNA was encapsulated. Administered intravenously in C57BL/6 mice.",
+    "expected": {
+      "lipid_reagents": ["SM-102", "DSPC", "cholesterol", "PEG-lipid"],
+      "payload": "siRNA",
+      "route": "intravenous"
+    }
+  },
+  {
+    "title": "ALC-0315 LNP for mRNA vaccine",
+    "text": "ALC-0315, DSPC, cholesterol, ALC-0159 formed LNP. mRNA encoding spike protein loaded. Intramuscular injection in Sprague-Dawley rats.",
+    "expected": {
+      "lipid_reagents": ["ALC-0315", "DSPC", "cholesterol", "ALC-0159"],
+      "payload": "mRNA",
+      "route": "Intramuscular"
+    }
+  }
+]

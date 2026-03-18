@@ -1,0 +1,26 @@
+crawl:
+  max_results_per_source: 500
+  retry_attempts: 3
+  retry_delay_seconds: 5
+  rate_limit_delay_seconds: 1.0
+  request_timeout_seconds: 30
+
+extraction:
+  confidence_threshold: 0.4
+  use_llm_fallback: false
+
+qa:
+  max_missing_lipid_fields_pct: 20
+  min_documents_per_run: 1
+
+search_terms:
+  primary:
+    - "lipid nanoparticle"
+    - "LNP"
+    - "ionizable lipid"
+  secondary:
+    - "mRNA delivery"
+    - "siRNA LNP"
+    - "PEG-lipid"
+    - "lipid nanoparticle formulation"
+    - "molar ratio lipid nanoparticle"

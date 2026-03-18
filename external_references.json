@@ -1,0 +1,92 @@
+[
+  {
+    "source": "PubMed",
+    "homepage": "https://pubmed.ncbi.nlm.nih.gov",
+    "api_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils",
+    "supports_discovery": true,
+    "crawled": false,
+    "last_crawled_at": null,
+    "new_entries_from_last_crawl": 0
+  },
+  {
+    "source": "PubMed Central",
+    "homepage": "https://pmc.ncbi.nlm.nih.gov",
+    "api_url": "https://pmc.ncbi.nlm.nih.gov/tools/developers",
+    "supports_discovery": false,
+    "crawled": false,
+    "last_crawled_at": null,
+    "new_entries_from_last_crawl": 0
+  },
+  {
+    "source": "Europe PMC",
+    "homepage": "https://europepmc.org",
+    "api_url": "https://www.ebi.ac.uk/europepmc/webservices/rest",
+    "supports_discovery": true,
+    "crawled": false,
+    "last_crawled_at": null,
+    "new_entries_from_last_crawl": 0
+  },
+  {
+    "source": "bioRxiv",
+    "homepage": "https://www.biorxiv.org",
+    "api_url": "https://api.biorxiv.org",
+    "supports_discovery": true,
+    "crawled": false,
+    "last_crawled_at": null,
+    "new_entries_from_last_crawl": 0
+  },
+  {
+    "source": "medRxiv",
+    "homepage": "https://www.medrxiv.org",
+    "api_url": "https://api.biorxiv.org",
+    "supports_discovery": true,
+    "crawled": false,
+    "last_crawled_at": null,
+    "new_entries_from_last_crawl": 0
+  },
+  {
+    "source": "Crossref",
+    "homepage": "https://www.crossref.org",
+    "api_url": "https://api.crossref.org",
+    "supports_discovery": true,
+    "crawled": false,
+    "last_crawled_at": null,
+    "new_entries_from_last_crawl": 0
+  },
+  {
+    "source": "OpenAlex",
+    "homepage": "https://openalex.org",
+    "api_url": "https://api.openalex.org",
+    "supports_discovery": true,
+    "crawled": false,
+    "last_crawled_at": null,
+    "new_entries_from_last_crawl": 0
+  },
+  {
+    "source": "Semantic Scholar",
+    "homepage": "https://api.semanticscholar.org",
+    "api_url": "https://api.semanticscholar.org/graph/v1",
+    "supports_discovery": true,
+    "crawled": false,
+    "last_crawled_at": null,
+    "new_entries_from_last_crawl": 0
+  },
+  {
+    "source": "DOAJ",
+    "homepage": "https://doaj.org",
+    "api_url": "https://doaj.org/api",
+    "supports_discovery": true,
+    "crawled": false,
+    "last_crawled_at": null,
+    "new_entries_from_last_crawl": 0
+  },
+  {
+    "source": "Unpaywall",
+    "homepage": "https://unpaywall.org",
+    "api_url": "https://api.unpaywall.org",
+    "supports_discovery": false,
+    "crawled": false,
+    "last_crawled_at": null,
+    "new_entries_from_last_crawl": 0
+  }
+]
