@@ -1,17 +1,18 @@
-import time
-import requests
+import logging
 from typing import Optional
 from lnp_crawler.config import RATE_LIMIT_DELAY_SECONDS, REQUEST_TIMEOUT_SECONDS, UNPAYWALL_EMAIL
+from lnp_crawler.http_utils import retry_request
+
 BASE = "https://api.unpaywall.org/v2"
+logger = logging.getLogger(__name__)
 
 def get_oa_url(doi: str) -> Optional[str]:
     try:
-        r = requests.get(f'{BASE}/{doi}', params={'email': UNPAYWALL_EMAIL}, timeout=REQUEST_TIMEOUT_SECONDS)
-        if r.status_code == 404:
+        r = retry_request(f'{BASE}/{doi}', {'email': UNPAYWALL_EMAIL})
+        if not r:
             return None
-        r.raise_for_status()
-        time.sleep(RATE_LIMIT_DELAY_SECONDS)
         best = r.json().get('best_oa_location')
         return (best or {}).get('url_for_pdf') or (best or {}).get('url')
-    except Exception:
+    except Exception as e:
+        logger.warning(f"Error fetching OA URL for DOI {doi}: {e}")
         return None
