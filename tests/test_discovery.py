@@ -9,8 +9,8 @@ from lnp_crawler.config import DATA_STAGING
 def test_discovery_writes_candidates(tmp_path, monkeypatch):
     monkeypatch.setattr(discover_documents, 'DATA_STAGING', tmp_path)
     monkeypatch.setattr(discover_documents, 'load_registry', lambda: [{'source': 'PubMed', 'homepage': 'x', 'api_url': 'y'}])
-    monkeypatch.setattr('lnp_crawler.db.upsert_source', lambda *args, **kwargs: 1)
-    monkeypatch.setattr('lnp_crawler.db.upsert_document', lambda doc: 99)
+    monkeypatch.setattr(discover_documents, 'upsert_source', lambda *args, **kwargs: 1)
+    monkeypatch.setattr(discover_documents, 'upsert_document', lambda doc: 99)
 
     class FakeClient:
         @staticmethod

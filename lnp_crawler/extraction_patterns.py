@@ -1,5 +1,6 @@
 import json
 import re
+from typing import List, Optional
 
 LIPID_NAMES = [
     r'DLin-MC3-DMA', r'MC3', r'ALC-0315', r'SM-102', r'lipid\s*H', r'ionizable\s+lipid',
@@ -23,26 +24,26 @@ def _unique(values):
     return seen
 
 
-def extract_lipids(text: str) -> list[str]:
+def extract_lipids(text: str) -> List[str]:
     return _unique([m.group(0) for m in LIPID_PATTERN.finditer(text or '')])
 
 
-def extract_ratios(text: str) -> str | None:
+def extract_ratios(text: str) -> Optional[str]:
     m = RATIO_PATTERN.search(text or '')
     return m.group(0).strip() if m else None
 
 
-def extract_payload(text: str) -> str | None:
+def extract_payload(text: str) -> Optional[str]:
     m = PAYLOAD_PATTERN.search(text or '')
     return m.group(1).strip() if m else None
 
 
-def extract_route(text: str) -> str | None:
+def extract_route(text: str) -> Optional[str]:
     m = ROUTE_PATTERN.search(text or '')
     return m.group(1).strip() if m else None
 
 
-def extract_cells(text: str) -> str | None:
+def extract_cells(text: str) -> Optional[str]:
     hits = _unique([m.group(1) for m in CELL_PATTERN.finditer(text or '')])
     return ', '.join(hits) if hits else None
 

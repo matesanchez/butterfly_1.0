@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse, json, sys
 from pathlib import Path
+from typing import Optional
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 from lnp_crawler.config import DATA_STAGING, MAX_RESULTS_PER_SOURCE
@@ -15,7 +16,7 @@ DISCOVERY_SOURCES = {
 
 CLIENTS = {'PubMed': pubmed_client, 'Europe PMC': europepmc_client, 'bioRxiv': biorxiv_client, 'medRxiv': medrxiv_client, 'Crossref': crossref_client, 'OpenAlex': openalex_client, 'Semantic Scholar': semanticscholar_client, 'DOAJ': doaj_client}
 
-def main(limit: int | None = None, source_filter: str | None = None) -> int:
+def main(limit: Optional[int] = None, source_filter: Optional[str] = None) -> int:
     registry = load_registry()
     total = 0
     DATA_STAGING.mkdir(parents=True, exist_ok=True)

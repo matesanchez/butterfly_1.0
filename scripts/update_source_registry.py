@@ -2,12 +2,13 @@
 from datetime import datetime, timezone
 import sys
 from pathlib import Path
+from typing import List, Dict
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 from lnp_crawler.db import get_connection
 from lnp_crawler.source_registry import load_registry, save_registry
 
-def main() -> list[dict]:
+def main() -> List[Dict]:
     registry = load_registry()
     with get_connection() as conn:
         rows = conn.execute(

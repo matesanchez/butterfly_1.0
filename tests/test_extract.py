@@ -30,7 +30,8 @@ def test_gold_set_extraction():
     for item in data:
         res = extract_all(item['text'])
         assert res['lipid_reagents_json'] or res.get('lipid_mix_text'), f"No lipids extracted for {item['title']}"
-        if expected := item.get('expected'):
+        expected = item.get('expected')
+        if expected:
             for lipid in expected.get('lipid_reagents', []):
                 assert any(lipid.lower() in s.lower() for s in (res.get('lipid_reagents_json') or [])) or (res.get('lipid_mix_text') and lipid.lower() in res.get('lipid_mix_text').lower())
             if expected.get('payload'):

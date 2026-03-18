@@ -1,9 +1,10 @@
 import time
 import requests
+from typing import Optional
 from lnp_crawler.config import RATE_LIMIT_DELAY_SECONDS, REQUEST_TIMEOUT_SECONDS, UNPAYWALL_EMAIL
 BASE = "https://api.unpaywall.org/v2"
 
-def get_oa_url(doi: str) -> str | None:
+def get_oa_url(doi: str) -> Optional[str]:
     try:
         r = requests.get(f'{BASE}/{doi}', params={'email': UNPAYWALL_EMAIL}, timeout=REQUEST_TIMEOUT_SECONDS)
         if r.status_code == 404:

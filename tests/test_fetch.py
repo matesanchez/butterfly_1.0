@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from unittest.mock import Mock
 
 from scripts import fetch_documents
 
@@ -14,14 +15,18 @@ def test_fetch_writes_raw_payload(tmp_path, monkeypatch):
     monkeypatch.setattr(fetch_documents, 'get_documents_by_status', lambda status: [
         {'id': 1, 'doi': '10.1/x', 'pmcid': None, 'abstract_text': 'abstract', 'title': 'T'}
     ])
-    monkeypatch.setattr('lnp_crawler.clients.unpaywall_client.get_oa_url', lambda doi: 'http://example.test/paper')
+    monkeypatch.setattr(fetch_documents, 'get_oa_url', lambda doi: 'http://example.test/paper')
 
     class Resp:
         text = 'full text here'
         def raise_for_status(self):
             return None
 
-    monkeypatch.setattr('requests.get', lambda *args, **kwargs: Resp())
+    mock_requests = Mock()
+    mock_resp = Resp()
+    mock_requests.get = Mock(return_value=mock_resp)
+    monkeypatch.setattr(fetch_documents, 'requests', mock_requests)
+    monkeypatch.setattr(fetch_documents, 'fetch_fulltext_xml', lambda pmcid: None)
     monkeypatch.setattr(fetch_documents, 'update_document_status', lambda *args, **kwargs: None)
 
     class DummyConn:

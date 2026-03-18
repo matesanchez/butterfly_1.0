@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import json, sys
 from pathlib import Path
+from typing import Optional
 from bs4 import BeautifulSoup
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
@@ -18,7 +19,7 @@ def parse_raw(payload: dict) -> dict:
     combined = ' '.join(part for part in [abstract, full] if part).strip()
     return {'abstract_or_body': combined, 'sections': extract_sections(combined)}
 
-def main(limit: int | None = None) -> int:
+def main(limit: Optional[int] = None) -> int:
     DATA_STAGING.mkdir(parents=True, exist_ok=True)
     docs = get_documents_by_status(DocStatus.FETCHED.value)
     if limit:

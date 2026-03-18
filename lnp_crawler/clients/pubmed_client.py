@@ -1,6 +1,7 @@
 import time
 import requests
-from lnp_crawler.config import NCBI_API_KEY, NCBI_EMAIL, RATE_LIMIT_DELAY_SECONDS, REQUEST_TIMEOUT_SECONDS
+from typing import List, Dict, Optional
+from lnp_crawler.config import NCBI_API_KEY, NCBI_EMAIL, RATE_LIMIT_DELAY_SECONDS, REQUEST_TIMEOUT_SECONDS, VERIFY_SSL
 from lnp_crawler.query_builder import pubmed_queries
 from urllib.parse import urljoin
 import re
@@ -14,20 +15,20 @@ def _params(extra: dict) -> dict:
     params.update(extra)
     return params
 
-def search(query: str, max_results: int = 100) -> list[str]:
-    r = requests.get(f'{BASE}/esearch.fcgi', params=_params({'db': 'pubmed', 'term': query, 'retmax': max_results}), timeout=REQUEST_TIMEOUT_SECONDS)
+def search(query: str, max_results: int = 100) -> List[str]:
+    r = requests.get(f'{BASE}esearch.fcgi', params=_params({'db': 'pubmed', 'term': query, 'retmax': max_results}), timeout=REQUEST_TIMEOUT_SECONDS, verify=VERIFY_SSL)
     r.raise_for_status()
     time.sleep(RATE_LIMIT_DELAY_SECONDS)
     return r.json().get('esearchresult', {}).get('idlist', [])
 
 def fetch_summary(pmid: str) -> dict:
-    r = requests.get(f'{BASE}/esummary.fcgi', params=_params({'db': 'pubmed', 'id': pmid}), timeout=REQUEST_TIMEOUT_SECONDS)
+    r = requests.get(f'{BASE}esummary.fcgi', params=_params({'db': 'pubmed', 'id': pmid}), timeout=REQUEST_TIMEOUT_SECONDS, verify=VERIFY_SSL)
     r.raise_for_status()
     time.sleep(RATE_LIMIT_DELAY_SECONDS)
     return r.json().get('result', {}).get(pmid, {})
 
 def fetch_abstract(pmid: str) -> str:
-    r = requests.get(urljoin(BASE, 'efetch.fcgi'), params=_params({'db': 'pubmed', 'id': pmid, 'rettype': 'abstract', 'retmode': 'text'}), timeout=REQUEST_TIMEOUT_SECONDS)
+    r = requests.get(urljoin(BASE, 'efetch.fcgi'), params=_params({'db': 'pubmed', 'id': pmid, 'rettype': 'abstract', 'retmode': 'text'}), timeout=REQUEST_TIMEOUT_SECONDS, verify=VERIFY_SSL)
     r.raise_for_status()
     time.sleep(RATE_LIMIT_DELAY_SECONDS)
     text = r.text.strip()
@@ -38,7 +39,7 @@ def fetch_abstract(pmid: str) -> str:
         return None
     return text
 
-def discover(max_results: int = 100) -> list[dict]:
+def discover(max_results: int = 100) -> List[Dict]:
     docs, seen = [], set()
     for query in pubmed_queries():
         for pmid in search(query, max_results=max_results):
@@ -48,7 +49,7 @@ def discover(max_results: int = 100) -> list[dict]:
             summary = fetch_summary(pmid)
             abstract = fetch_abstract(pmid)
             doi = summary.get('elocationid') or None
-            def _clean_doi(raw: str | None) -> str | None:
+            def _clean_doi(raw: Optional[str]) -> Optional[str]:
                 if not raw:
                     return None
                 raw = raw.strip()

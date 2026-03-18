@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse, hashlib, json, sys, requests
 from pathlib import Path
+from typing import Optional
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 from lnp_crawler.config import DATA_RAW
@@ -9,7 +10,7 @@ from lnp_crawler.state_machine import DocStatus
 from lnp_crawler.clients.pmc_client import fetch_fulltext_xml
 from lnp_crawler.clients.unpaywall_client import get_oa_url
 
-def main(limit: int | None = None) -> int:
+def main(limit: Optional[int] = None) -> int:
     DATA_RAW.mkdir(parents=True, exist_ok=True)
     docs = get_documents_by_status(DocStatus.DISCOVERED.value)
     if limit:

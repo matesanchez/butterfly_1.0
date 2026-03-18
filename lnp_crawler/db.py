@@ -31,7 +31,7 @@ def init_schema(schema_path: Path) -> None:
         conn.executescript(schema_path.read_text(encoding='utf-8'))
 
 
-def upsert_source(name: str, homepage: str | None, api_url: str | None) -> int:
+def upsert_source(name: str, homepage: Optional[str], api_url: Optional[str]) -> int:
     with get_connection() as conn:
         conn.execute('INSERT OR IGNORE INTO sources (name, homepage, api_url) VALUES (?, ?, ?)', (name, homepage, api_url))
         row = conn.execute('SELECT id FROM sources WHERE name = ?', (name,)).fetchone()
@@ -44,12 +44,12 @@ def start_crawl_run(source_id: Optional[int]) -> int:
         return int(cur.lastrowid)
 
 
-def finish_crawl_run(run_id: int, status: str, discovered: int = 0, fetched: int = 0, inserted: int = 0, error: str | None = None) -> None:
+def finish_crawl_run(run_id: int, status: str, discovered: int = 0, fetched: int = 0, inserted: int = 0, error: Optional[str] = None) -> None:
     with get_connection() as conn:
         conn.execute('UPDATE crawl_runs SET finished_at = ?, status = ?, discovered_count = ?, fetched_count = ?, inserted_count = ?, error_message = ? WHERE id = ?', (datetime.now(timezone.utc).isoformat(), status, discovered, fetched, inserted, error, run_id))
 
 
-def upsert_document(doc: dict) -> "int | None":
+def upsert_document(doc: dict) -> Optional[int]:
     with get_connection() as conn:
         conn.execute(
             """

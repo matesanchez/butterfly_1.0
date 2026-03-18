@@ -3,11 +3,7 @@ __pycache__/
 *.egg-info/
 .env
 *.sqlite
-data/raw/
-data/staging/
-data/normalized/
-data/failed/
-data/exports/
+data/
 logs/
 .venv/
 venv/

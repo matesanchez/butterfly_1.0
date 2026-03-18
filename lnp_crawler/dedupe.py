@@ -1,11 +1,12 @@
 from rapidfuzz import fuzz
+from typing import List, Dict
 
 
-def is_duplicate_title(a: str, b: str, threshold: int = 97) -> bool:
+def is_duplicate_title(a: str, b: str, threshold: int = 75) -> bool:
     return fuzz.ratio((a or '').strip().lower(), (b or '').strip().lower()) >= threshold
 
 
-def deduplicate_records(records: list[dict]) -> list[dict]:
+def deduplicate_records(records: List[Dict]) -> List[Dict]:
     deduped = []
     seen_dois = set()
     seen_titles = []

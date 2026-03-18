@@ -37,7 +37,7 @@ Each stage is idempotent and can be resumed independently using the `--resume` f
 ## Setup
 
 ### Requirements
-- Python 3.11+
+- Python 3.7+
 - SQLite 3.24+ (for UPSERT support)
 - pip or conda
 
@@ -104,16 +104,38 @@ Each stage is idempotent and can be resumed independently using the `--resume` f
 ```bash
 python scripts/run_pipeline.py --dry-run --limit 5
 ```
-This exercises the pipeline without making actual API requests; useful for testing setup.
+This exercises the pipeline framework without making any external API requests; useful for verifying your setup works correctly without network dependencies.
 
 ### Full Crawl (All Stages)
 ```bash
 python scripts/run_pipeline.py
 ```
-Runs all 10 pipeline stages in sequence. On first run, this may take several hours depending on:
+Runs all 10 pipeline stages in sequence with real-time progress tracking. On first run, this may take several hours depending on:
 - Number of sources and search term combinations
 - Rate limiting (1 second default between requests per source)
 - Network latency and API availability
+
+**Output:** Shows stage progress, elapsed time per stage, and ETA for completion:
+```
+======================================================================
+BUTTERFLY 1.0 PIPELINE START - 2026-03-17 20:29:01
+======================================================================
+
+[1/10] Running: DISCOVER...
+   ... (API calls and data discovery) ...
+✓ DISCOVER completed in 5.2m
+   ETA: 42.5m remaining (finish ~21:17:30)
+
+[2/10] Running: FETCH...
+   ... (fetching documents) ...
+✓ FETCH completed in 8.1m
+   ETA: 38.2m remaining (finish ~21:25:15)
+   
+... (remaining stages)
+
+✓ PIPELINE COMPLETE - Total time: 47.3m
+======================================================================
+```
 
 ### Running Individual Stages
 
@@ -136,10 +158,16 @@ python -c "from scripts.extract_lnp_data import main; main()"
 ### Command-Line Options
 
 **`run_pipeline.py` accepts:**
-- `--dry-run` — Skip all stages except discovery; test without API calls
-- `--limit N` — Limit discovery to N results per source (default: no limit)
-- `--source NAME` — Run discovery for a single source (e.g., `PubMed`)
-- `--resume` — Skip stages that have no pending documents; allows resuming interrupted runs
+- `--dry-run` — Skip all API calls and test the pipeline framework
+- `--limit N` — Limit discovery to N results per source (default: no limit; use with `--source` for testing)
+- `--source NAME` — Run discovery for a single source only (e.g., `PubMed`, `Europe PMC`)
+- `--resume` — Skip stages that already have completed work; allows resuming interrupted runs
+
+**Progress Tracking:**
+- Real-time output shows which stage is running (e.g., `[3/10] Running: EXTRACT...`)
+- Per-stage elapsed time displayed (e.g., `✓ EXTRACT completed in 12.5m`)
+- Running ETA shows estimated time remaining and finish time (e.g., `ETA: 35.2m remaining (finish ~21:15:30)`)
+- Total pipeline completion time shown at the end
 
 **Example:**
 ```bash
@@ -219,6 +247,28 @@ pytest tests/ --cov=lnp_crawler --cov=scripts -v
 Tests use an in-memory SQLite database (configured via `tests/conftest.py`) and do not modify the production database.
 
 ## Troubleshooting
+
+### SSL Certificate verification (already disabled for corporate)
+**Good news:** SSL verification is **disabled by default** for corporate proxy compatibility.
+
+If you want to enable verification for security:
+```bash
+# Windows PowerShell
+$env:VERIFY_SSL = 'true'
+python scripts/run_pipeline.py
+
+# Windows cmd
+set VERIFY_SSL=true
+python scripts/run_pipeline.py
+
+# Unix/macOS
+export VERIFY_SSL=true
+python scripts/run_pipeline.py
+```
+
+**If you still get SSL errors in corporate environments:**
+- Option 1: Keep `VERIFY_SSL=false` (default, development-friendly)
+- Option 2: Contact IT to get the corporate root certificate and install it in Python's certificate store
 
 ### NCBI API timeouts or blocking
 - Ensure `NCBI_EMAIL` is set to a valid email in `.env`

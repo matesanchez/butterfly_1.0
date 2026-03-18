@@ -1,9 +1,10 @@
 import json
 from pathlib import Path
+from typing import List, Dict
 from lnp_crawler.config import MAX_MISSING_LIPID_FIELDS_PCT
 
 
-def build_qa_report(records: list[dict]) -> dict:
+def build_qa_report(records: List[Dict]) -> Dict:
     total = len(records)
     missing = sum(1 for rec in records if not rec.get('lipid_reagents_json'))
     pct = round((missing / total) * 100, 2) if total else 0.0
@@ -16,7 +17,7 @@ def build_qa_report(records: list[dict]) -> dict:
     }
 
 
-def write_qa_report(path: Path, records: list[dict]) -> dict:
+def write_qa_report(path: Path, records: List[Dict]) -> Dict:
     report = build_qa_report(records)
     path.write_text(json.dumps(report, indent=2), encoding='utf-8')
     return report

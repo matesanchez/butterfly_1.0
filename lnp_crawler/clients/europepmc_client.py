@@ -1,12 +1,13 @@
 import time, requests
-from lnp_crawler.config import RATE_LIMIT_DELAY_SECONDS, REQUEST_TIMEOUT_SECONDS
+from typing import List, Dict
+from lnp_crawler.config import RATE_LIMIT_DELAY_SECONDS, REQUEST_TIMEOUT_SECONDS, VERIFY_SSL
 from lnp_crawler.query_builder import generic_queries
 BASE = "https://www.ebi.ac.uk/europepmc/webservices/rest"
 
-def discover(max_results: int = 100) -> list[dict]:
+def discover(max_results: int = 100) -> List[Dict]:
     docs, seen = [], set()
     for query in generic_queries():
-        r = requests.get(f'{BASE}/search', params={'query': query, 'resultType': 'core', 'format': 'json', 'pageSize': min(max_results,25)}, timeout=REQUEST_TIMEOUT_SECONDS)
+        r = requests.get(f'{BASE}/search', params={'query': query, 'resultType': 'core', 'format': 'json', 'pageSize': min(max_results,25)}, timeout=REQUEST_TIMEOUT_SECONDS, verify=VERIFY_SSL)
         r.raise_for_status()
         time.sleep(RATE_LIMIT_DELAY_SECONDS)
         for art in r.json().get('resultList', {}).get('result', []):

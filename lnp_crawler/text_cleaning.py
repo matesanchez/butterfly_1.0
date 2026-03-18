@@ -1,4 +1,5 @@
 import re
+from typing import Dict
 
 
 def strip_html(text: str) -> str:
@@ -13,7 +14,7 @@ def clean(text: str) -> str:
     return normalize_whitespace(strip_html(text))
 
 
-def extract_sections(text: str) -> dict[str, str]:
+def extract_sections(text: str) -> Dict[str, str]:
     pattern = re.compile(r'(abstract|introduction|methods?|materials and methods|results|discussion|conclusion)', re.IGNORECASE)
     parts = pattern.split(text or '')
     sections = {}

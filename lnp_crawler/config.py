@@ -28,6 +28,8 @@ UNPAYWALL_EMAIL = os.getenv('UNPAYWALL_EMAIL') or 'butterfly@example.com'
 
 REQUEST_TIMEOUT_SECONDS = int(CRAWL.get('request_timeout_seconds', 30))
 RATE_LIMIT_DELAY_SECONDS = float(CRAWL.get('rate_limit_delay_seconds', 1.0))
+# Default to False for corporate proxy environments; set VERIFY_SSL=true for production
+VERIFY_SSL = os.getenv('VERIFY_SSL', 'false').lower() in ('true', '1', 'yes')
 RETRY_ATTEMPTS = int(CRAWL.get('retry_attempts', 3))
 MAX_RESULTS_PER_SOURCE = int(CRAWL.get('max_results_per_source', 100))
 CONFIDENCE_THRESHOLD = float(EXTRACTION.get('confidence_threshold', 0.4))
