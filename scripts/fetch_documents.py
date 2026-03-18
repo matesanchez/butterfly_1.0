@@ -15,9 +15,20 @@ def main(limit: Optional[int] = None) -> int:
     docs = get_documents_by_status(DocStatus.DISCOVERED.value)
     if limit:
         docs = docs[:limit]
+    
     fetched = 0
-    for doc in docs:
+    failed = 0
+    total = len(docs)
+    
+    for idx, doc in enumerate(docs, 1):
         doc_id = doc['id']
+        # Handle both dict and sqlite3.Row objects
+        try:
+            title = doc['title'][:50] if doc['title'] else 'Untitled'
+        except (KeyError, TypeError):
+            title = 'Untitled'
+        print(f"   [{idx}/{total}] Fetching: {title}...", flush=True, end='\r')
+        
         raw_path = DATA_RAW / f'{doc_id}.json'
         try:
             content = None
@@ -41,8 +52,11 @@ def main(limit: Optional[int] = None) -> int:
                 conn.execute('UPDATE documents SET raw_hash = ?, full_text_path = ? WHERE id = ?', (raw_hash, str(raw_path), doc_id))
             update_document_status(doc_id, DocStatus.FETCHED.value)
             fetched += 1
-        except Exception:
+        except Exception as e:
             update_document_status(doc_id, DocStatus.FAILED.value)
+            failed += 1
+    
+    print(f"   ✓ Fetched {fetched}/{total} documents ({failed} failed)" + " " * 60, flush=True)
     return fetched
 
 if __name__ == '__main__':

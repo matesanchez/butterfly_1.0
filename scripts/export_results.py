@@ -10,6 +10,8 @@ def main() -> int:
     DATA_EXPORTS.mkdir(parents=True, exist_ok=True)
     csv_path = DATA_EXPORTS / 'lnp_formulations.csv'
     json_path = DATA_EXPORTS / 'lnp_formulations.json'
+    
+    print("   Exporting results to CSV and JSON...", flush=True, end='\r')
     with get_connection() as conn:
         rows = conn.execute("""
             SELECT d.id AS document_id, d.title, d.doi, d.pmid, d.pmcid, d.journal_or_site,
@@ -26,6 +28,7 @@ def main() -> int:
             writer.writeheader(); writer.writerows(records)
     else:
         csv_path.write_text('', encoding='utf-8')
+    print(f"   ✓ Exported {len(records)} records to CSV and JSON" + " " * 30, flush=True)
     return len(records)
 
 if __name__ == '__main__':

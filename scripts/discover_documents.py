@@ -22,23 +22,39 @@ def main(limit: Optional[int] = None, source_filter: Optional[str] = None) -> in
     DATA_STAGING.mkdir(parents=True, exist_ok=True)
     out_path = DATA_STAGING / 'discovered_documents.jsonl'
     mode = 'a' if out_path.exists() else 'w'
+    
+    # Count sources to discover from
+    sources_to_query = []
+    for src in registry:
+        name = src.get('source')
+        if source_filter and name != source_filter:
+            continue
+        if name not in DISCOVERY_SOURCES:
+            continue
+        if name not in CLIENTS:
+            continue
+        sources_to_query.append((name, src))
+    
     with open(out_path, mode, encoding='utf-8') as out:
-        for src in registry:
-            name = src.get('source')
-            if source_filter and name != source_filter:
-                continue
-            if name not in DISCOVERY_SOURCES:
-                continue
+        for idx, (name, src) in enumerate(sources_to_query, 1):
+            print(f"   [{idx}/{len(sources_to_query)}] Querying: {name}...", flush=True)
             client = CLIENTS.get(name)
-            if not client:
-                continue
             source_id = upsert_source(name, src.get('homepage'), src.get('api_url'))
-            for doc in client.discover(max_results=limit or MAX_RESULTS_PER_SOURCE):
-                doc['source_id'] = source_id
-                doc['pipeline_status'] = 'DISCOVERED'
-                doc['document_id'] = upsert_document(doc)
-                out.write(json.dumps(doc, ensure_ascii=False) + '\n')
-                total += 1
+            
+            try:
+                docs_found = 0
+                for doc in client.discover(max_results=limit or MAX_RESULTS_PER_SOURCE):
+                    doc['source_id'] = source_id
+                    doc['pipeline_status'] = 'DISCOVERED'
+                    doc['document_id'] = upsert_document(doc)
+                    out.write(json.dumps(doc, ensure_ascii=False) + '\n')
+                    total += 1
+                    docs_found += 1
+                print(f"       ✓ Found {docs_found} documents", flush=True)
+            except Exception as e:
+                print(f"       ✗ Error: {e}", flush=True)
+                continue
+    
     return total
 
 if __name__ == '__main__':

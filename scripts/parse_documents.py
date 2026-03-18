@@ -24,14 +24,23 @@ def main(limit: Optional[int] = None) -> int:
     docs = get_documents_by_status(DocStatus.FETCHED.value)
     if limit:
         docs = docs[:limit]
+    
     count = 0
+    total = len(docs)
+    print(f"   Processing: {total} documents", flush=True)
+    
     with open(DATA_STAGING / 'parsed_documents.jsonl', 'w', encoding='utf-8') as out:
-        for doc in docs:
+        for idx, doc in enumerate(docs, 1):
+            if idx % max(1, total // 10) == 0 or idx == total or idx == 1:
+                print(f"   [{idx}/{total}] Parsing documents...", flush=True, end='\r')
+            
             payload = json.loads((DATA_RAW / f"{doc['id']}.json").read_text(encoding='utf-8'))
             record = {'document_id': doc['id'], 'title': doc['title'], 'doi': doc['doi'], **parse_raw(payload)}
             out.write(json.dumps(record, ensure_ascii=False) + '\n')
             update_document_status(doc['id'], DocStatus.PARSED.value)
             count += 1
+    
+    print(f"   ✓ Parsed {count} documents" + " " * 40, flush=True)
     return count
 
 if __name__ == '__main__':
