@@ -3,6 +3,10 @@ from pathlib import Path
 import yaml
 from dotenv import load_dotenv
 
+# Suppress urllib3 InsecureRequestWarning for corporate proxy environments
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 ROOT = Path(os.environ.get("BUTTERFLY_ROOT", Path(__file__).resolve().parent.parent))
 load_dotenv(ROOT / '.env')
 
