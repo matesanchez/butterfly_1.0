@@ -39,6 +39,10 @@ MAX_RESULTS_PER_SOURCE = int(CRAWL.get('max_results_per_source', 100))
 CONFIDENCE_THRESHOLD = float(EXTRACTION.get('confidence_threshold', 0.4))
 MAX_MISSING_LIPID_FIELDS_PCT = float(QA.get('max_missing_lipid_fields_pct', 20))
 
+# NCBI allows 10 requests/second with API key, 3 without
+# 0.1s delay = 10 req/s, 0.33s delay ~= 3 req/s
+NCBI_RATE_LIMIT_DELAY_SECONDS = 0.1 if NCBI_API_KEY else RATE_LIMIT_DELAY_SECONDS
+
 DB_PATH = ROOT / 'db' / 'lnp_literature.sqlite'
 EXTERNAL_REFS_PATH = ROOT / 'external_references.json'
 DATA_RAW = ROOT / 'data' / 'raw'
