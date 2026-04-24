@@ -1,4 +1,5 @@
 import json
+from json import JSONDecodeError
 
 ALIASES = {
     'cationic lipid': 'ionizable lipid',
@@ -13,7 +14,8 @@ ALIASES = {
 
 def canonicalize(value: str) -> str:
     cleaned = (value or '').strip()
-    return ALIASES.get(cleaned.lower(), cleaned)
+    alias_key = cleaned.lower().strip(" .")
+    return ALIASES.get(alias_key, cleaned)
 
 
 def normalize_lipid_list(items):
@@ -34,7 +36,7 @@ def normalize_record(rec: dict) -> dict:
         try:
             lipids = json.loads(raw)
             out['lipid_reagents_json'] = json.dumps(normalize_lipid_list(lipids))
-        except Exception:
+        except (JSONDecodeError, TypeError):
             pass
     route = rec.get('administration_route')
     if route:

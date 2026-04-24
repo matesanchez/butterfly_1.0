@@ -17,10 +17,13 @@ CELL_PATTERN = re.compile(r'(HeLa|HEK293|HepG2|A549|Jurkat|PBMC|dendritic cell|h
 
 def _unique(values):
     seen = []
+    seen_lower = set()
     for value in values:
         cleaned = value.strip()
-        if cleaned and cleaned.lower() not in [x.lower() for x in seen]:
+        lowered = cleaned.lower()
+        if cleaned and lowered not in seen_lower:
             seen.append(cleaned)
+            seen_lower.add(lowered)
     return seen
 
 

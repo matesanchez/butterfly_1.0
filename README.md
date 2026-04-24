@@ -37,7 +37,7 @@ Each stage is idempotent and can be resumed independently using the `--resume` f
 ## Setup
 
 ### Requirements
-- Python 3.7+
+- Python 3.10+
 - SQLite 3.24+ (for UPSERT support)
 - pip or conda
 
@@ -69,9 +69,10 @@ Each stage is idempotent and can be resumed independently using the `--resume` f
    .venv\Scripts\activate.bat
    ```
 
-3. **Install dependencies:**
+3. **Install dependencies and the local package:**
    ```bash
    pip install -r requirements.txt
+   pip install -e .
    ```
 
 4. **Configure environment variables:**
@@ -95,7 +96,9 @@ Each stage is idempotent and can be resumed independently using the `--resume` f
 
 6. **Verify installation:**
    ```bash
+   ruff check .
    pytest tests/ -v
+   python scripts/run_pipeline.py --dry-run --limit 5
    ```
 
 ## Running the Crawler
@@ -329,8 +332,11 @@ butterfly_1.0/
 
 **Code quality:**
 ```bash
+pip install -r requirements.txt
+pip install -e .
 ruff check .          # Linting
-pytest tests/ -q      # Tests
+pytest tests/ -v --tb=short
+python scripts/run_pipeline.py --dry-run --limit 5
 ```
 
 **Contributing:**
