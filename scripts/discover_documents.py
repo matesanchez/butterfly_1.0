@@ -1,13 +1,26 @@
 #!/usr/bin/env python3
-import argparse, json, sys
+import argparse
+import json
+import sys
 from pathlib import Path
 from typing import Optional
+
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
-from lnp_crawler.config import DATA_STAGING, MAX_RESULTS_PER_SOURCE
-from lnp_crawler.db import upsert_document, upsert_source
-from lnp_crawler.source_registry import load_registry
-from lnp_crawler.clients import biorxiv_client, crossref_client, doaj_client, europepmc_client, medrxiv_client, openalex_client, pubmed_client, semanticscholar_client
+
+from lnp_crawler.clients import (  # noqa: E402
+    biorxiv_client,
+    crossref_client,
+    doaj_client,
+    europepmc_client,
+    medrxiv_client,
+    openalex_client,
+    pubmed_client,
+    semanticscholar_client,
+)
+from lnp_crawler.config import DATA_STAGING, MAX_RESULTS_PER_SOURCE  # noqa: E402
+from lnp_crawler.db import upsert_document, upsert_source  # noqa: E402
+from lnp_crawler.source_registry import load_registry  # noqa: E402
 
 DISCOVERY_SOURCES = {
     'PubMed', 'Europe PMC', 'bioRxiv', 'medRxiv',

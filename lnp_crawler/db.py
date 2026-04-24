@@ -1,14 +1,14 @@
+import contextlib
 import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
+
 from lnp_crawler.config import DB_PATH
 from lnp_crawler.logger import get_logger
 
 log = get_logger(__name__)
 
-
-import contextlib
 
 @contextlib.contextmanager
 def get_connection():

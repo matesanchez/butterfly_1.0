@@ -1,9 +1,6 @@
 import json
-from pathlib import Path
-from unittest.mock import patch
 
 from scripts import discover_documents
-from lnp_crawler.config import DATA_STAGING
 
 
 def test_discovery_writes_candidates(tmp_path, monkeypatch):

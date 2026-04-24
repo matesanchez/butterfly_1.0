@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-import json, sys
+import json
+import sys
 from pathlib import Path
+
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
-from lnp_crawler.config import DATA_NORMALIZED
-from lnp_crawler.dedupe import deduplicate_records
+
+from lnp_crawler.config import DATA_NORMALIZED  # noqa: E402
+from lnp_crawler.dedupe import deduplicate_records  # noqa: E402
 
 def main() -> int:
     print("   Loading records for deduplication...", flush=True, end='\r')

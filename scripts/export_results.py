@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
-import csv, json, sys
+import csv
+import json
+import sys
 from pathlib import Path
+
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
-from lnp_crawler.config import DATA_EXPORTS
-from lnp_crawler.db import get_connection
+
+from lnp_crawler.config import DATA_EXPORTS  # noqa: E402
+from lnp_crawler.db import get_connection  # noqa: E402
 
 def main() -> int:
     DATA_EXPORTS.mkdir(parents=True, exist_ok=True)
@@ -25,7 +29,8 @@ def main() -> int:
     if records:
         with open(csv_path, 'w', newline='', encoding='utf-8') as fh:
             writer = csv.DictWriter(fh, fieldnames=list(records[0].keys()))
-            writer.writeheader(); writer.writerows(records)
+            writer.writeheader()
+            writer.writerows(records)
     else:
         csv_path.write_text('', encoding='utf-8')
     print(f"   ✓ Exported {len(records)} records to CSV and JSON" + " " * 30, flush=True)

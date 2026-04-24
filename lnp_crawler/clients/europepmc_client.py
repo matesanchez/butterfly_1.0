@@ -1,8 +1,5 @@
-import time
-import requests
 import logging
 from typing import List, Dict
-from lnp_crawler.config import RATE_LIMIT_DELAY_SECONDS, REQUEST_TIMEOUT_SECONDS, VERIFY_SSL
 from lnp_crawler.query_builder import generic_queries
 from lnp_crawler.http_utils import retry_request
 

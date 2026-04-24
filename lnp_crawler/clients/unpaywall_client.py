@@ -1,6 +1,6 @@
 import logging
 from typing import Optional
-from lnp_crawler.config import RATE_LIMIT_DELAY_SECONDS, REQUEST_TIMEOUT_SECONDS, UNPAYWALL_EMAIL
+from lnp_crawler.config import UNPAYWALL_EMAIL
 from lnp_crawler.http_utils import retry_request
 
 BASE = "https://api.unpaywall.org/v2"

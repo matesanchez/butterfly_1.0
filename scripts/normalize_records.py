@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-import json, sys
+import json
+import sys
 from pathlib import Path
+
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
-from lnp_crawler.config import DATA_NORMALIZED, DATA_STAGING
-from lnp_crawler.normalization import normalize_record
+
+from lnp_crawler.config import DATA_NORMALIZED, DATA_STAGING  # noqa: E402
+from lnp_crawler.normalization import normalize_record  # noqa: E402
 
 def main() -> int:
     DATA_NORMALIZED.mkdir(parents=True, exist_ok=True)

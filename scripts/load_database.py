@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
-import json, sys
+import json
+import sys
 from pathlib import Path
+
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
-from lnp_crawler.config import DATA_NORMALIZED
-from lnp_crawler.db import insert_lnp_record, update_document_status
-from lnp_crawler.state_machine import DocStatus
+
+from lnp_crawler.config import DATA_NORMALIZED  # noqa: E402
+from lnp_crawler.db import insert_lnp_record, update_document_status  # noqa: E402
+from lnp_crawler.state_machine import DocStatus  # noqa: E402
 
 def main() -> int:
     # Count records first

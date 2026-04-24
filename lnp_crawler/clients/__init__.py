@@ -1,1 +1,10 @@
-from . import biorxiv_client, crossref_client, doaj_client, europepmc_client, medrxiv_client, openalex_client, pmc_client, pubmed_client, semanticscholar_client, unpaywall_client
+from . import biorxiv_client as biorxiv_client
+from . import crossref_client as crossref_client
+from . import doaj_client as doaj_client
+from . import europepmc_client as europepmc_client
+from . import medrxiv_client as medrxiv_client
+from . import openalex_client as openalex_client
+from . import pmc_client as pmc_client
+from . import pubmed_client as pubmed_client
+from . import semanticscholar_client as semanticscholar_client
+from . import unpaywall_client as unpaywall_client

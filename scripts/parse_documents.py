@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
-import json, sys
+import json
+import sys
 from pathlib import Path
 from typing import Optional
+
 from bs4 import BeautifulSoup
+
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
-from lnp_crawler.config import DATA_RAW, DATA_STAGING
-from lnp_crawler.db import get_documents_by_status, update_document_status
-from lnp_crawler.state_machine import DocStatus
-from lnp_crawler.text_cleaning import clean, extract_sections
+
+from lnp_crawler.config import DATA_RAW, DATA_STAGING  # noqa: E402
+from lnp_crawler.db import get_documents_by_status, update_document_status  # noqa: E402
+from lnp_crawler.state_machine import DocStatus  # noqa: E402
+from lnp_crawler.text_cleaning import clean, extract_sections  # noqa: E402
 
 def parse_raw(payload: dict) -> dict:
     abstract = clean(payload.get('abstract') or '')

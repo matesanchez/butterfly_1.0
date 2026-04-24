@@ -9,8 +9,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from lnp_crawler.db import finish_crawl_run, start_crawl_run, get_documents_by_status
-from lnp_crawler.state_machine import DocStatus
+from lnp_crawler.db import finish_crawl_run, start_crawl_run, get_documents_by_status  # noqa: E402
+from lnp_crawler.state_machine import DocStatus  # noqa: E402
 
 STAGES = [
     ("discover",        "scripts.discover_documents"),

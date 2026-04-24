@@ -1,7 +1,5 @@
-import time
-import requests
 from typing import List, Dict, Optional
-from lnp_crawler.config import NCBI_API_KEY, NCBI_EMAIL, NCBI_RATE_LIMIT_DELAY_SECONDS, REQUEST_TIMEOUT_SECONDS, VERIFY_SSL
+from lnp_crawler.config import NCBI_API_KEY, NCBI_EMAIL, NCBI_RATE_LIMIT_DELAY_SECONDS
 from lnp_crawler.query_builder import pubmed_queries
 from lnp_crawler.http_utils import retry_request
 from urllib.parse import urljoin

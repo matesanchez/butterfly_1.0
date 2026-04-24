@@ -2,7 +2,6 @@ import pytest
 from pathlib import Path
 from unittest.mock import patch
 import lnp_crawler.db as db_module
-from lnp_crawler.config import DB_PATH
 
 @pytest.fixture(autouse=True)
 def use_temp_db(tmp_path):

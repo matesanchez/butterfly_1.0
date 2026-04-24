@@ -1,4 +1,3 @@
-import json
 from scripts import parse_documents
 
 

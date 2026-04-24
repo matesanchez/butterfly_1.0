@@ -3,10 +3,12 @@ from datetime import datetime, timezone
 import sys
 from pathlib import Path
 from typing import List, Dict
+
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
-from lnp_crawler.db import get_connection
-from lnp_crawler.source_registry import load_registry, save_registry
+
+from lnp_crawler.db import get_connection  # noqa: E402
+from lnp_crawler.source_registry import load_registry, save_registry  # noqa: E402
 
 def main() -> List[Dict]:
     print("   Updating source registry...", flush=True, end='\r')

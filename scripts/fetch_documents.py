@@ -1,14 +1,20 @@
 #!/usr/bin/env python3
-import argparse, hashlib, json, sys, requests
+import argparse
+import hashlib
+import json
+import requests
+import sys
 from pathlib import Path
 from typing import Optional
+
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
-from lnp_crawler.config import DATA_RAW
-from lnp_crawler.db import get_connection, get_documents_by_status, update_document_status
-from lnp_crawler.state_machine import DocStatus
-from lnp_crawler.clients.pmc_client import fetch_fulltext_xml
-from lnp_crawler.clients.unpaywall_client import get_oa_url
+
+from lnp_crawler.clients.pmc_client import fetch_fulltext_xml  # noqa: E402
+from lnp_crawler.clients.unpaywall_client import get_oa_url  # noqa: E402
+from lnp_crawler.config import DATA_RAW  # noqa: E402
+from lnp_crawler.db import get_connection, get_documents_by_status, update_document_status  # noqa: E402
+from lnp_crawler.state_machine import DocStatus  # noqa: E402
 
 def main(limit: Optional[int] = None) -> int:
     DATA_RAW.mkdir(parents=True, exist_ok=True)
@@ -52,7 +58,7 @@ def main(limit: Optional[int] = None) -> int:
                 conn.execute('UPDATE documents SET raw_hash = ?, full_text_path = ? WHERE id = ?', (raw_hash, str(raw_path), doc_id))
             update_document_status(doc_id, DocStatus.FETCHED.value)
             fetched += 1
-        except Exception as e:
+        except Exception:
             update_document_status(doc_id, DocStatus.FAILED.value)
             failed += 1
     
